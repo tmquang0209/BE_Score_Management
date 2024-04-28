@@ -10,6 +10,10 @@ import lombok.Data;
 @Table(name = "teachers")
 public class Teacher {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+
     @Column(name = "teacher_code")
     private String studentCode;
 
@@ -32,19 +36,14 @@ public class Teacher {
     private String gender;
 
     @ManyToOne
-    @JoinColumn(name = "major_code", referencedColumnName = "major_code")
+    @JoinColumn(name = "major_id", referencedColumnName = "id")
     private Major major;
-
-    @Column(name = "created_at")
-    private String createdAt;
-
-    @Column(name = "updated_at")
-    private String updatedAt;
 
     public Teacher() {
     }
 
-    public Teacher(String studentCode, String name, String email, String phone, String address, Date birthDate, String gender, Major major, String createdAt, String updatedAt) {
+    public Teacher(String studentCode, String name, String email, String phone, String address, Date birthDate,
+            String gender, Major major) {
         this.studentCode = studentCode;
         this.name = name;
         this.email = email;
@@ -53,8 +52,6 @@ public class Teacher {
         this.birthDate = birthDate;
         this.gender = gender;
         this.major = major;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public String getStudentCode() {
@@ -119,21 +116,5 @@ public class Teacher {
 
     public void setMajor(Major major) {
         this.major = major;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
