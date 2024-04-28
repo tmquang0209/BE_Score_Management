@@ -10,7 +10,11 @@ import lombok.Data;
 @Table(name = "employees")
 public class Employee {
     @Id
-    @Column(name = "code")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+
+    @Column(name = "code", unique = true)
     private String code;
 
     @Column(name = "name")
@@ -35,8 +39,11 @@ public class Employee {
     private String role;
 
     @ManyToOne
-    @JoinColumn(name = "department_code", referencedColumnName = "code")
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
+
+    @Column(name = "is_active", columnDefinition = "boolean default true")
+    private boolean isActive;
 
     public Employee() {
     }

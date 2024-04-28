@@ -1,6 +1,16 @@
 package com.tmquang.score.models;
 
-import jakarta.persistence.*;
+import java.sql.Date;
+
+import org.springframework.data.annotation.CreatedDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import lombok.Data;
 
 @Entity
@@ -8,17 +18,15 @@ import lombok.Data;
 @Table(name = "departments")
 public class Department {
     @Id
-    @Column(name = "code")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+
+    @Column(name = "code", nullable = false)
     private String code;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "create_at")
-    private String createAt;
-
-    @Column(name = "update_at")
-    private String updateAt;
 
     public Department() {
     }
@@ -26,6 +34,14 @@ public class Department {
     public Department(String code, String name) {
         this.code = code;
         this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCode() {
@@ -43,5 +59,4 @@ public class Department {
     public void setName(String name) {
         this.name = name;
     }
-
 }
