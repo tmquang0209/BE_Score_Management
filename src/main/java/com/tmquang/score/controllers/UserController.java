@@ -50,7 +50,7 @@ public class UserController {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         EmployeeImpl userDetails = (EmployeeImpl) authentication.getPrincipal();
-        String role = userDetails.getAuthorities().toString();
+        String role = userDetails.getAuthorities().toString().replace('[',' ').replace(']',' ').trim();
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
