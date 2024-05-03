@@ -42,11 +42,9 @@ public class Employee {
     @Column(name = "gender")
     private String gender;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = "employee_roles",
-            joinColumns = @JoinColumn(name = "emp_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @ManyToOne()
+    @JoinColumn(name = "role", referencedColumnName = "id")
+    private Role role;
 
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id")
@@ -55,7 +53,7 @@ public class Employee {
     @Column(name = "is_active", columnDefinition = "boolean default true")
     private boolean isActive;
 
-    public Employee(String code, String name, String phone, String email, String password, Date dob, String gender, Set<Role> roles) {
+    public Employee(String code, String name, String phone, String email, String password, Date dob, String gender, Role role) {
         this.code = code;
         this.name = name;
         this.phone = phone;
@@ -63,6 +61,6 @@ public class Employee {
         this.password = password;
         this.dob = dob;
         this.gender = gender;
-        this.roles = roles;
+        this.role = role;
     }
 }

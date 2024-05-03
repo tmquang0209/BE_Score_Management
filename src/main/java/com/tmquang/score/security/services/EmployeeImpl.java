@@ -1,11 +1,13 @@
 package com.tmquang.score.security.services;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import com.tmquang.score.models.Employee;
+import com.tmquang.score.repositories.RoleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class EmployeeImpl implements UserDetails {
   private static final long serialVersionUID = 1L;
 
-  private Long id;
+  private Integer id;
 
   private String username;
 
@@ -26,26 +28,28 @@ public class EmployeeImpl implements UserDetails {
 
   private Collection<? extends GrantedAuthority> authorities;
 
+  @Autowired
+  static RoleRepository roleRepository = null;
+
   public EmployeeImpl(Integer id, String username, String email, String password,
                       Collection<? extends GrantedAuthority> authorities) {
-    this.id = Long.valueOf(id);
+    this.id = id;
     this.username = username;
     this.email = email;
     this.password = password;
     this.authorities = authorities;
   }
 
-  public static com.tmquang.score.security.services.EmployeeImpl build(Employee user) {
-    List<GrantedAuthority> authorities = user.getRoles().stream()
-        .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-        .collect(Collectors.toList());
+  public static EmployeeImpl build(Employee user) {
+    Set<GrantedAuthority> authorities = new HashSet<>();
+    authorities.add(new SimpleGrantedAuthority(user.getRole().getName().name()));
 
-    return new com.tmquang.score.security.services.EmployeeImpl(
-        user.getId(), 
-        user.getCode(),
-        user.getEmail(),
-        user.getPassword(),
-        authorities);
+    return new EmployeeImpl(
+            user.getId(),
+            user.getCode(),
+            user.getEmail(),
+            user.getPassword(),
+            authorities);
   }
 
   @Override
@@ -53,7 +57,7 @@ public class EmployeeImpl implements UserDetails {
     return authorities;
   }
 
-  public Long getId() {
+  public Integer getId() {
     return id;
   }
 
@@ -97,7 +101,7 @@ public class EmployeeImpl implements UserDetails {
       return true;
     if (o == null || getClass() != o.getClass())
       return false;
-    com.tmquang.score.security.services.EmployeeImpl user = (com.tmquang.score.security.services.EmployeeImpl) o;
+    EmployeeImpl user = (EmployeeImpl) o;
     return Objects.equals(id, user.id);
   }
 }

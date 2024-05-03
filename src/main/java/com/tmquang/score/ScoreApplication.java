@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -35,17 +36,15 @@ public class ScoreApplication {
 		SpringApplication.run(ScoreApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner commandLineRunner(PasswordEncoder passwordEncoder) {
-		return args -> {
-			Department department = new Department();
-			Set<Role> roles = Set.of();
-			Optional<Role> role = roleRepository.findByName(ERole.MANAGER);
-
-			Employee admin = new Employee("PC001", "Nguyen Van A", "01233333", "abc@gmail.com", passwordEncoder.encode("123456"), new Date(1990, 1, 1), "male", roles);
-			employeeService.saveEmployee(admin);
-
-			// You might want to save the admin employee using a service or repository
-		};
-	}
+//	@Bean
+//	public CommandLineRunner commandLineRunner(PasswordEncoder passwordEncoder) {
+//		return args -> {
+//			Role empRole = roleRepository.findByName(ERole.MANAGER).orElseThrow(()-> new RuntimeException("Error: role not found"));
+//
+//			Employee admin = new Employee("PC001", "Nguyen Van B", "01233333", "abcd@gmail.com", passwordEncoder.encode("123456"), new Date(1990, 1, 1), "male", empRole);
+//			employeeService.saveEmployee(admin);
+//
+//			// You might want to save the admin employee using a service or repository
+//		};
+//	}
 }

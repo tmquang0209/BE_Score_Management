@@ -50,13 +50,12 @@ public class UserController {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         EmployeeImpl userDetails = (EmployeeImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
+        String role = userDetails.getAuthorities().toString();
+
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles));
+                role));
     }
 }
