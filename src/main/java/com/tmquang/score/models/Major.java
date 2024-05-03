@@ -2,8 +2,12 @@ package com.tmquang.score.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Data
 @Table(name = "majors")
 public class Major {
@@ -24,13 +28,5 @@ public class Major {
     public Major(String majorCode, String majorName) {
         this.majorCode = majorCode;
         this.majorName = majorName;
-    }
-
-    public String getMajorCode() {
-        return majorCode;
-    }
-
-    public String getMajorName() {
-        return majorName;
     }
 }

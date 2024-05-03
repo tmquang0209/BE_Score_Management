@@ -1,12 +1,19 @@
 package com.tmquang.score.models;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.tmquang.score.enums.ERole;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "employees")
 public class Employee {
     @Id
@@ -23,7 +30,7 @@ public class Employee {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password")
@@ -35,8 +42,11 @@ public class Employee {
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "role")
-    private String role;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(  name = "employee_roles",
+            joinColumns = @JoinColumn(name = "emp_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id")
@@ -45,11 +55,7 @@ public class Employee {
     @Column(name = "is_active", columnDefinition = "boolean default true")
     private boolean isActive;
 
-    public Employee() {
-    }
-
-    public Employee(String code, String name, String phone, String email, String password, Date dob, String gender,
-            String role, Department department) {
+    public Employee(String code, String name, String phone, String email, String password, Date dob, String gender, Set<Role> roles) {
         this.code = code;
         this.name = name;
         this.phone = phone;
@@ -57,80 +63,6 @@ public class Employee {
         this.password = password;
         this.dob = dob;
         this.gender = gender;
-        this.role = role;
-        this.department = department;
+        this.roles = roles;
     }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
 }
