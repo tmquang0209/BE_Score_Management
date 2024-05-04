@@ -5,6 +5,7 @@ import com.tmquang.score.payload.response.JwtResponse;
 import com.tmquang.score.repositories.EmployeeRepository;
 import com.tmquang.score.security.jwt.JwtUtils;
 import com.tmquang.score.security.services.EmployeeImpl;
+import com.tmquang.score.security.services.UserPrincipal;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,7 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
-        EmployeeImpl userDetails = (EmployeeImpl) authentication.getPrincipal();
+        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
         String role = userDetails.getAuthorities().toString().replace('[',' ').replace(']',' ').trim();
 
         return ResponseEntity.ok(new JwtResponse(jwt,

@@ -1,5 +1,6 @@
 package com.tmquang.score.security.services;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -7,6 +8,7 @@ import java.util.Set;
 
 import com.tmquang.score.models.Employee;
 import com.tmquang.score.repositories.RoleRepository;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,18 +17,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class EmployeeImpl implements UserDetails {
+  @Serial
   private static final long serialVersionUID = 1L;
 
+  @Getter
   private Integer id;
 
-  private String username;
+  private final String username;
 
+  @Getter
   private String email;
 
   @JsonIgnore
   private String password;
 
-  private Collection<? extends GrantedAuthority> authorities;
+  private final Collection<? extends GrantedAuthority> authorities;
 
   @Autowired
   static RoleRepository roleRepository = null;
@@ -55,14 +60,6 @@ public class EmployeeImpl implements UserDetails {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return authorities;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public String getEmail() {
-    return email;
   }
 
   @Override

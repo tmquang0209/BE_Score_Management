@@ -2,6 +2,8 @@ package com.tmquang.score.security;
 
 import com.tmquang.score.security.jwt.AuthEntryPointJwt;
 import com.tmquang.score.security.jwt.AuthTokenFilter;
+import com.tmquang.score.security.services.CustomUserDetailsService;
+import com.tmquang.score.security.services.UserPrincipal;
 import com.tmquang.score.security.services.EmployeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,12 +22,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity
- (securedEnabled = true,
- jsr250Enabled = true,
- prePostEnabled = true) // by default
+        (securedEnabled = true,
+                jsr250Enabled = true,
+                prePostEnabled = true) // by default
 public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     @Autowired
-    EmployeeServiceImpl employeeService;
+    CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
@@ -43,7 +46,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-        authProvider.setUserDetailsService(employeeService);
+        authProvider.setUserDetailsService(customUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;

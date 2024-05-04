@@ -22,7 +22,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
   private JwtUtils jwtUtils;
 
   @Autowired
-  private com.tmquang.score.security.services.EmployeeServiceImpl userDetailsService;
+  private com.tmquang.score.security.services.CustomUserDetailsService userDetailsService;
 
   private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 

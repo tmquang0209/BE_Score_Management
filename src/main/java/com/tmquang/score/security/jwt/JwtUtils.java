@@ -3,6 +3,7 @@ package com.tmquang.score.security.jwt;
 import java.security.Key;
 import java.util.Date;
 
+import com.tmquang.score.security.services.UserPrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,10 +28,10 @@ public class JwtUtils {
 
   public String generateJwtToken(Authentication authentication) {
 
-    com.tmquang.score.security.services.EmployeeImpl employeePrincipal = (com.tmquang.score.security.services.EmployeeImpl) authentication.getPrincipal();
+    com.tmquang.score.security.services.UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
     return builder()
-        .setSubject((employeePrincipal.getUsername()))
+        .setSubject((userPrincipal.getUsername()))
         .setIssuedAt(new Date())
         .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
         .signWith(key(), SignatureAlgorithm.HS256)
