@@ -21,8 +21,8 @@ public class DepartmentService {
         return departmentRepository.findById(id);
     }
 
-    public Department saveDepartment(Department department){
-        return departmentRepository.save(department);
+    public void saveDepartment(Department department){
+        departmentRepository.save(department);
     }
 
     public Department updateDepartment(Integer id, Department department) {

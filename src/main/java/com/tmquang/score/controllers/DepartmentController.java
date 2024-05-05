@@ -38,7 +38,7 @@ public class DepartmentController {
     @GetMapping("/getById/{id}")
     public ApiResponse<Optional<Department>> getDepartmentById(@PathVariable Integer id) {
         Optional<Department> department = departmentService.getDepartmentById(id);
-        boolean success = department != null; // Check if department retrieval was successful
+        boolean success = department.isPresent(); // Check if department retrieval was successful
         String message = success ? "Department retrieved successfully." : "Failed to retrieve department.";
         return new ApiResponse<>(success, List.of(department), message);
     }
@@ -57,6 +57,7 @@ public class DepartmentController {
         Department updatedDepartment = departmentService.updateDepartment(id, department);
         boolean success = updatedDepartment != null; // Check if department update was successful
         String message = success ? "Department updated successfully." : "Failed to update department.";
+        assert updatedDepartment != null;
         return new ApiResponse<>(success, List.of(updatedDepartment), message);
     }
 
@@ -64,7 +65,12 @@ public class DepartmentController {
     @DeleteMapping("/delete/{id}")
     public ApiResponse<Department> deleteDepartment(@RequestHeader("Authorization") String token,
             @PathVariable Integer id) {
-        departmentService.deleteDepartment(id);
-        return new ApiResponse<>(true, null, "Department deleted successfully.");
+        boolean departmentExists = departmentService.getDepartmentById(id).isPresent();
+        if(departmentExists){
+            departmentService.deleteDepartment(id);
+            return new ApiResponse<>(true, null, "Department deleted successfully.");
+        }
+        return new ApiResponse<>(false, null, "Department doesn't exists");
+
     }
 }

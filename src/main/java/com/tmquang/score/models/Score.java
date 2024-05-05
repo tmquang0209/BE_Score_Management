@@ -24,6 +24,10 @@ public class Score {
     @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
 
+    @ManyToOne
+    @JoinColumn(name = "subject_id", referencedColumnName = "id")
+    private Subject subject;
+
     @Column(name = "midterm__score")
     private float midtermScore;
 

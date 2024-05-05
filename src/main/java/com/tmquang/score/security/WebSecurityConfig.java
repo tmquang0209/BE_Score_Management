@@ -1,5 +1,6 @@
 package com.tmquang.score.security;
 
+import com.tmquang.score.enums.ERole;
 import com.tmquang.score.security.jwt.AuthEntryPointJwt;
 import com.tmquang.score.security.jwt.AuthTokenFilter;
 import com.tmquang.score.security.services.CustomUserDetailsService;
@@ -87,6 +88,13 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/user/signin/**").permitAll()
+                                .requestMatchers("/department/**").hasAuthority(String.valueOf(ERole.ADMIN))
+                                .requestMatchers("/year/create", "/year/update/**", "/year/delete/**").hasAuthority(String.valueOf(ERole.ADMIN))
+                                .requestMatchers("/year/**").permitAll()
+                                .requestMatchers("/semester/create", "/semester/update/**", "/semester/delete/**").hasAuthority(String.valueOf(ERole.ADMIN))
+                                .requestMatchers("/subject/**").hasAuthority(String.valueOf(ERole.ADMIN))
+                                .requestMatchers("/enrollment/**").hasAnyAuthority(String.valueOf(ERole.ADMIN),String.valueOf(ERole.STAFF), String.valueOf(ERole.STUDENT))
+                                .requestMatchers("/score/**", "/schedule/**").hasAnyAuthority(String.valueOf(ERole.ADMIN), String.valueOf(ERole.MANAGER), String.valueOf(ERole.STAFF), String.valueOf(ERole.TEACHER), String.valueOf(ERole.STUDENT))
                                 .requestMatchers("/api/test/**").permitAll()
                                 .anyRequest().authenticated()
                 );

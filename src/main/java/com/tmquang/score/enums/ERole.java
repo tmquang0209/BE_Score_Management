@@ -4,5 +4,6 @@ public enum ERole {
     MANAGER,
     STAFF,
     ADMIN,
-    TEACHER
+    TEACHER,
+    STUDENT
 }

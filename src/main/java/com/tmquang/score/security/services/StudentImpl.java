@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.tmquang.score.enums.ERole;
-import com.tmquang.score.models.Teacher;
+import com.tmquang.score.models.Student;
 import com.tmquang.score.repositories.RoleRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class TeacherImpl implements UserDetails {
+public class StudentImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     @Getter
@@ -35,8 +35,8 @@ public class TeacherImpl implements UserDetails {
     @Autowired
     static RoleRepository roleRepository = null;
 
-    public TeacherImpl(Integer id, String username, String email, String password,
-                        Collection<? extends GrantedAuthority> authorities) {
+    public StudentImpl(Integer id, String username, String email, String password,
+                       Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -44,13 +44,13 @@ public class TeacherImpl implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static TeacherImpl build(Teacher user) {
+    public static StudentImpl build(Student user) {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(ERole.TEACHER.name()));
+        authorities.add(new SimpleGrantedAuthority(ERole.STUDENT.name()));
 
-        return new TeacherImpl(
+        return new StudentImpl(
                 user.getId(),
-                user.getTeacherCode(),
+                user.getStudentCode(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities);
@@ -97,7 +97,7 @@ public class TeacherImpl implements UserDetails {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        TeacherImpl user = (TeacherImpl) o;
+        StudentImpl user = (StudentImpl) o;
         return Objects.equals(id, user.id);
     }
 }

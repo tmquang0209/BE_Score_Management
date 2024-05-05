@@ -22,6 +22,9 @@ public class Subject {
     @Column(name = "credit")
     private Integer credit;
 
+    @Column(name = "final_exam_rate")
+    private Float rate;
+
     public Subject() {
     }
 
