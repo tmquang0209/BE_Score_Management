@@ -13,8 +13,8 @@ public class YearService {
     @Autowired
     YearRepository yearRepository;
 
-    public void saveYear(Year year){
-        yearRepository.save(year);
+    public Year saveYear(Year year){
+        return yearRepository.save(year);
     }
 
     public List<Year> getAll(){
