@@ -38,7 +38,7 @@ public class StudentService implements UserDetailsService {
             findStudent.setEmail(data.getEmail());
             findStudent.setGender(data.getGender());
             findStudent.setAddress(data.getAddress());
-            findStudent.setBirthDate(data.getBirthDate());
+            findStudent.setDob(data.getDob());
             findStudent.setPhone(data.getPhone());
 
             return studentRepository.save(findStudent);
