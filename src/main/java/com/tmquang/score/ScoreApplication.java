@@ -52,7 +52,7 @@ public class ScoreApplication {
 		return args -> {
 			Role empRole = roleRepository.findByName(ERole.ADMIN).orElseThrow(()-> new RuntimeException("Error: role not found"));
 
-			Employee admin = new Employee("AD001", "Nguyen Van A", "01233333", "abcd1@gmail.com", passwordEncoder.encode("123456"), new Date(1990, 1, 1), "male", empRole);
+			Employee admin = new Employee("AD001", "Nguyen Van A", "01233333", "abcd1@gmail.com", passwordEncoder.encode("123456"), new Date(1990, 1, 1), "male", "Vinh Phuc", empRole);
 			if(employeeRepository.findByCode("PC002").isEmpty())
 				employeeService.saveEmployee(admin);
 
