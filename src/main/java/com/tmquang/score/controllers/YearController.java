@@ -16,8 +16,8 @@ public class YearController {
 
     @PostMapping("/create")
     public ApiResponse<Year> create(@RequestBody Year yearRequest) {
-        yearService.saveYear(yearRequest);
-        return new ApiResponse<>(true, null, "Year created successfully.");
+        Year newYear = yearService.saveYear(yearRequest);
+        return new ApiResponse<>(true, List.of(newYear), "Year created successfully.");
     }
 
     @GetMapping("/all")
