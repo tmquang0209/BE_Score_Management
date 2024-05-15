@@ -36,8 +36,8 @@ public class Teacher {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "birthdate")
-    private Date birthDate;
+    @Column(name = "dob")
+    private Date dob;
 
     @Column(name = "gender")
     private String gender;
@@ -49,14 +49,14 @@ public class Teacher {
     public Teacher() {
     }
 
-    public Teacher(String teacherCode, String name, String password,  String email, String phone, String address, Date birthDate, String gender, Major major) {
+    public Teacher(String teacherCode, String name, String password, String email, String phone, String address, Date dob, String gender, Major major) {
         this.teacherCode = teacherCode;
         this.password = password;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.address = address;
-        this.birthDate = birthDate;
+        this.dob = dob;
         this.gender = gender;
         this.major = major;
     }

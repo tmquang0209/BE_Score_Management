@@ -42,6 +42,9 @@ public class Employee {
     @Column(name = "gender")
     private String gender;
 
+    @Column(name = "address")
+    private String address;
+
     @ManyToOne()
     @JoinColumn(name = "role", referencedColumnName = "id")
     private Role role;
@@ -53,7 +56,7 @@ public class Employee {
     @Column(name = "is_active", columnDefinition = "boolean default true")
     private boolean isActive;
 
-    public Employee(String code, String name, String phone, String email, String password, Date dob, String gender, Role role) {
+    public Employee(String code, String name, String phone, String email, String password, Date dob, String gender, String address, Role role) {
         this.code = code;
         this.name = name;
         this.phone = phone;
@@ -61,6 +64,8 @@ public class Employee {
         this.password = password;
         this.dob = dob;
         this.gender = gender;
+        this.address = address;
         this.role = role;
     }
+
 }
