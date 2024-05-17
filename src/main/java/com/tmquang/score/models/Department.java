@@ -18,10 +18,10 @@ public class Department {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "code", nullable = false)
+    @Column(name = "code", unique = true, nullable = false)
     private String code;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     public Department() {

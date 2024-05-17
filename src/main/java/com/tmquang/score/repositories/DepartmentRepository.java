@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.*;
 
 import com.tmquang.score.models.Department;
 
-public interface DepartmentRepository extends JpaRepository<Department, Integer> {
+import java.util.Optional;
 
+public interface DepartmentRepository extends JpaRepository<Department, Integer> {
+    Optional<Department> findByCode(String code);
 }

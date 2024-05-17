@@ -45,9 +45,13 @@ public class DepartmentController {
 
     // create department
     @PostMapping("/create")
-    public ApiResponse<Department> newProduct(@RequestBody Department department) {
-        departmentService.saveDepartment(department);
-        return new ApiResponse<>(true, List.of(department), "Department created successfully.");
+    public ApiResponse<Department> newProduct(@RequestBody Department department) throws Exception {
+        try{
+            Department newDepartment = departmentService.saveDepartment(department);
+            return new ApiResponse<>(true, List.of(newDepartment), "Department created successfully.");
+        }catch (Exception e){
+            return new ApiResponse<>(false, null, e.getMessage());
+        }
     }
 
     // Update department

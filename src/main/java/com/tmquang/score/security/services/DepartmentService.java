@@ -21,16 +21,22 @@ public class DepartmentService {
         return departmentRepository.findById(id);
     }
 
-    public void saveDepartment(Department department){
+    public Department saveDepartment(Department department) throws Exception {
+        // check data
+        Optional<Department> isExists = departmentRepository.findByCode(department.getCode());
+        if(isExists.isPresent()) {
+            throw new Exception("Department with code "+ department.getCode() +" is exists");
+        }
         departmentRepository.save(department);
+        return department;
     }
 
     public Department updateDepartment(Integer id, Department department) {
         Optional<Department> existingDepartmentOptional = departmentRepository.findById(id);
         if (existingDepartmentOptional.isPresent()) {
             Department existingDepartment = existingDepartmentOptional.get();
+            existingDepartment.setCode(department.getCode());
             existingDepartment.setName(department.getName());
-            // Update other fields if needed
             return departmentRepository.save(existingDepartment);
         } else {
             // Handle not found scenario
