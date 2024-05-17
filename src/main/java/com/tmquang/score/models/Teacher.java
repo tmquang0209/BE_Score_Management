@@ -15,10 +15,10 @@ import lombok.Setter;
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = true)
     private Integer id;
 
-    @Column(name = "teacher_code")
+    @Column(name = "teacher_code", unique = true)
     private String teacherCode;
 
     @Column(name = "password")
@@ -59,5 +59,16 @@ public class Teacher {
         this.dob = dob;
         this.gender = gender;
         this.major = major;
+    }
+
+    public void setInfo(Teacher data) {
+        this.teacherCode = data.getTeacherCode();
+        this.name = data.getName();
+        this.email = data.getEmail();
+        this.phone = data.getPhone();
+        this.address = data.getAddress();
+        this.dob = data.getDob();
+        this.gender = data.getGender();
+        this.major = data.getMajor();
     }
 }
