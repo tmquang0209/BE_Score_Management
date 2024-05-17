@@ -30,8 +30,8 @@ public class TeacherController {
             // hash password
             String hashPassword = passwordEncoder.encode(teacher.getPassword());
             teacher.setPassword(hashPassword);
-            teacherService.saveTeacher(teacher);
-            return new ApiResponse<>(true, null, "Teacher created successfully.");
+            Teacher newTeacher = teacherService.saveTeacher(teacher);
+            return new ApiResponse<>(true, List.of(newTeacher), "Teacher created successfully.");
         } catch (RuntimeException ex) {
             return new ApiResponse<>(false, null, ex.getMessage());
         }

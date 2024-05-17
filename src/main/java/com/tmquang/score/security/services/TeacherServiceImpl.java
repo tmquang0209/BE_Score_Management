@@ -51,8 +51,8 @@ public class TeacherServiceImpl implements UserDetailsService {
         Optional<Teacher> findTeacherOptional = teacherRepository.findById(id);
         if(findTeacherOptional.isPresent()){
             Teacher findTeacher = findTeacherOptional.get();
-            Major major = majorRepository.getReferenceById(data.getMajor().getId());
-            data.setMajor(major);
+//            Major major = majorRepository.getReferenceById(data.getMajor().getId());
+//            data.setMajor(major);
             findTeacher.setInfo(data);
             return teacherRepository.save(findTeacher);
         }
