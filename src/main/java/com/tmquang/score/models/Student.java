@@ -3,6 +3,7 @@ package com.tmquang.score.models;
 import java.sql.Date;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,19 +19,23 @@ public class Student {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "student_code")
+    @NotBlank
+    @Column(name = "student_code", unique = true)
     private String studentCode;
 
-    @Column(name = "name")
+    @NotBlank
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "password")
+    @NotBlank
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name = "phone")
+    @NotBlank
+    @Column(name = "phone", nullable = false)
     private String phone;
 
     @Column(name = "address")
@@ -39,7 +44,8 @@ public class Student {
     @Column(name = "dob")
     private Date dob;
 
-    @Column(name = "gender")
+    @NotBlank
+    @Column(name = "gender", nullable = false)
     private String gender;
 
     @ManyToOne

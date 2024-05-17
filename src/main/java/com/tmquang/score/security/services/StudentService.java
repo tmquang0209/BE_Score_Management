@@ -28,6 +28,10 @@ public class StudentService implements UserDetailsService {
         return studentRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Student not found with id: " + id));
     }
 
+    public Student getByCode(String code){
+        return studentRepository.findByStudentCode(code).orElse(null);
+    }
+
     public Student update(Integer id, Student data){
         Optional<Student> findStudentOptional = studentRepository.findById(id);
 
