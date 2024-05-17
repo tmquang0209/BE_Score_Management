@@ -17,8 +17,8 @@ public class SubjectController {
     @PostMapping("/create")
     public ApiResponse<Subject> create(@RequestBody Subject subject) {
         try {
-            subjectService.saveSubject(subject);
-            return new ApiResponse<>(true, null, "Subject created successfully.");
+            Subject newSubject = subjectService.saveSubject(subject);
+            return new ApiResponse<>(true, List.of(newSubject), "Subject created successfully.");
         } catch (RuntimeException ex) {
             return new ApiResponse<>(false, null, ex.getMessage());
         }

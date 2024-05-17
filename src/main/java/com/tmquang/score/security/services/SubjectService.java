@@ -13,8 +13,9 @@ public class SubjectService {
     @Autowired
     SubjectRepository subjectRepository;
 
-    public void saveSubject(Subject subject){
+    public Subject saveSubject(Subject subject){
         subjectRepository.save(subject);
+        return subject;
     }
 
     public List<Subject> getAll(){
