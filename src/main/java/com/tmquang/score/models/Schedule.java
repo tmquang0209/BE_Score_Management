@@ -25,6 +25,8 @@ public class Schedule {
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
+    private String className;
+
     @Column(name = "day")
     private String day;
 
