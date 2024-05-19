@@ -13,8 +13,8 @@ public class SemesterService {
     @Autowired
     SemesterRepository semesterRepository;
 
-    public void saveSemester(Semester semester){
-        semesterRepository.save(semester);
+    public Semester saveSemester(Semester semester){
+        return semesterRepository.save(semester);
     }
 
     public List<Semester> getAll(){
