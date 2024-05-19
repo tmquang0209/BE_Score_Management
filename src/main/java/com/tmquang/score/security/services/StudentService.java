@@ -44,6 +44,7 @@ public class StudentService implements UserDetailsService {
             findStudent.setAddress(data.getAddress());
             findStudent.setDob(data.getDob());
             findStudent.setPhone(data.getPhone());
+            findStudent.setMajor(data.getMajor());
 
             return studentRepository.save(findStudent);
         } else {
