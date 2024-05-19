@@ -21,13 +21,10 @@ public class SemesterController {
     YearService yearService;
 
     @PostMapping("/create")
-    public ApiResponse<Semester> create(@RequestBody SemesterRequest data) {
+    public ApiResponse<Semester> create(@RequestBody Semester data) {
         try {
-            Year yearData = yearService.getById(data.getYearId());
-
-            Semester newSemester = new Semester(yearData, data.getSemester());
-            semesterService.saveSemester(newSemester);
-            return new ApiResponse<>(true, null, "Semester created successfully.");
+            Semester newSemester = semesterService.saveSemester(data);
+            return new ApiResponse<>(true, List.of(newSemester), "Semester created successfully.");
         } catch (RuntimeException ex) {
             return new ApiResponse<>(false, null, ex.getMessage());
         }
@@ -56,12 +53,10 @@ public class SemesterController {
     }
 
     @PutMapping("/update/{id}")
-    public ApiResponse<Semester> updatebyId(@PathVariable Integer id, @RequestBody SemesterRequest semesterRequest){
+    public ApiResponse<Semester> update(@PathVariable Integer id, @RequestBody Semester semesterRequest){
         try{
-            Year yearData = yearService.getById(semesterRequest.getYearId());
-            Semester updateSemester = new Semester(yearData, semesterRequest.getSemester());
-            semesterService.update(id, updateSemester);
-            return new ApiResponse<>(true, null, "Semester update successfully.");
+            Semester updateSemester = semesterService.update(id, semesterRequest);
+            return new ApiResponse<>(true, List.of(updateSemester), "Semester update successfully.");
         }catch (Exception e){
             return  new ApiResponse<>(false, null, e.getMessage());
         }
