@@ -47,8 +47,8 @@ public class ScheduleController {
     @PutMapping("/update/{id}")
     public ApiResponse<Schedule> updatebyId(@PathVariable Integer id, @RequestBody Schedule schedule){
         try{
-            scheduleService.update(id, schedule);
-            return new ApiResponse<>(true, null, "Schedule updated successfully.");
+            Schedule update = scheduleService.update(id, schedule);
+            return new ApiResponse<>(true, List.of(update), "Schedule updated successfully.");
         }catch (Exception e){
             return  new ApiResponse<>(false, null, e.getMessage());
         }

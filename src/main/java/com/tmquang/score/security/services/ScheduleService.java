@@ -31,6 +31,8 @@ public class ScheduleService {
         if(findScheduleOptional.isPresent()){
             Schedule findSchedule = findScheduleOptional.get();
             findSchedule.setSemester(data.getSemester());
+            findSchedule.setClassName(data.getClassName());
+            findSchedule.setRoom(data.getRoom());
             findSchedule.setSubject(data.getSubject());
             findSchedule.setDay(data.getDay());
             findSchedule.setShift(data.getShift());
