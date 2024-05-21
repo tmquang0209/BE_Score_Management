@@ -1,11 +1,15 @@
 package com.tmquang.score.controllers;
 
+import com.tmquang.score.models.Semester;
 import com.tmquang.score.models.Year;
+import com.tmquang.score.payload.response.YearAndSemesterResponse;
+import com.tmquang.score.security.services.SemesterService;
 import com.tmquang.score.security.services.YearService;
 import com.tmquang.score.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -13,6 +17,9 @@ import java.util.List;
 public class YearController {
     @Autowired
     YearService yearService;
+
+    @Autowired
+    SemesterService semesterService;
 
     @PostMapping("/create")
     public ApiResponse<Year> create(@RequestBody Year yearRequest) {
@@ -25,6 +32,20 @@ public class YearController {
         List<Year> yearList = yearService.getAll();
 
         return new ApiResponse<>(true, yearList, "Get year successfully.");
+    }
+
+    @GetMapping("/yearAndSemester")
+    public ApiResponse<YearAndSemesterResponse> getYearAndSemester() {
+        List<Year> yearList = yearService.getAll();
+        List<YearAndSemesterResponse> result = new ArrayList<>();
+
+        for (Year year : yearList) {
+            List<Semester> semesterList = semesterService.getSemestersByYear(year.getId());
+            YearAndSemesterResponse yearAndSemesters = new YearAndSemesterResponse(year, semesterList);
+            result.add(yearAndSemesters);
+        }
+
+        return new ApiResponse<>(true, result, "Get year and semester successful");
     }
 
     @GetMapping("/details/{id}")
