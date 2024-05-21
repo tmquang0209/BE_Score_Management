@@ -14,9 +14,9 @@ public class Enrollment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "semester_id", referencedColumnName = "id")
-    private Semester semester;
+//    @ManyToOne
+//    @JoinColumn(name = "semester_id", referencedColumnName = "id")
+//    private Semester semester;
 
     @ManyToOne
     @JoinColumn(name = "student_id", referencedColumnName = "id")
@@ -29,9 +29,13 @@ public class Enrollment {
     public Enrollment() {
     }
 
-    public Enrollment(Student student, Schedule schedule, Semester semester) {
+//    public Enrollment(Student student, Schedule schedule, Semester semester) {
+//        this.student = student;
+//        this.schedule = schedule;
+//        this.semester = semester;
+//    }
+    public Enrollment(Student student, Schedule schedule) {
         this.student = student;
         this.schedule = schedule;
-        this.semester = semester;
     }
 }
