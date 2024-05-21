@@ -5,6 +5,7 @@ import com.tmquang.score.payload.request.UserRequest;
 import com.tmquang.score.security.services.EmployeeServiceImpl;
 import com.tmquang.score.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,9 +16,15 @@ public class EmployeeController {
     @Autowired
     EmployeeServiceImpl employeeService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @PostMapping("/create")
     public ApiResponse<Employee> create(@RequestBody Employee employee) {
         try {
+            String password = passwordEncoder.encode(employee.getPassword());
+            employee.setPassword(password);
+            
             Employee newEmp = employeeService.saveEmployee(employee);
             return new ApiResponse<>(true, List.of(newEmp), "Employee created successfully.");
         } catch (RuntimeException ex) {
