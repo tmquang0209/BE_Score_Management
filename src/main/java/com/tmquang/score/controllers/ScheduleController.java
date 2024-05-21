@@ -1,6 +1,7 @@
 package com.tmquang.score.controllers;
 
 import com.tmquang.score.models.Schedule;
+import com.tmquang.score.payload.request.ScheduleRequest;
 import com.tmquang.score.security.services.ScheduleService;
 import com.tmquang.score.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,22 @@ public class ScheduleController {
     public ApiResponse<Schedule> getAll(){
         try{
             List<Schedule> scheduleList = scheduleService.getAll();
+            return new ApiResponse<>(true, scheduleList, "Get schedule list successful.");
+        }catch (Exception e){
+            return  new ApiResponse<>(false, null, e.getMessage());
+        }
+    }
+
+    @PostMapping("/search")
+    public ApiResponse<Schedule> search(@RequestBody ScheduleRequest data){
+        try{
+            List<Schedule> scheduleList;
+            System.out.println(data.getSemesterId() + ", " + data.getClassName() + ", " + data.getSubjectId());
+            if (data.getClassName() == null)
+                data.setClassName("");
+
+            scheduleList = scheduleService.findSchedules(data.getSemesterId(), data.getSubjectId(), data.getClassName());
+
             return new ApiResponse<>(true, scheduleList, "Get schedule list successful.");
         }catch (Exception e){
             return  new ApiResponse<>(false, null, e.getMessage());

@@ -5,6 +5,7 @@ import com.tmquang.score.repositories.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,18 +18,34 @@ public class ScheduleService {
         scheduleRepository.save(schedule);
     }
 
+    public List<Schedule> findScheduleBySemester(Integer id){
+        return scheduleRepository.findBySemesterId(id);
+    }
+
+    public List<Schedule> findScheduleByClassName(String className){
+        List<Schedule> scheduleList = scheduleRepository.findByClassName(className);
+        return scheduleList;
+//        return scheduleOptional.map(Collections::singletonList).orElse(Collections.emptyList());
+    }
+
+    public List<Schedule> findSchedules(Integer semesterId, Integer subjectId, String className){
+        List<Schedule> scheduleList = scheduleRepository.findBySemesterAndClassNameAndSubjectId(semesterId, className, subjectId);
+        return scheduleList;
+//        return scheduleOptional.map(Collections::singletonList).orElse(Collections.emptyList());
+    }
+
     public List<Schedule> getAll(){
         return scheduleRepository.findAll();
     }
 
     public Schedule getById(Integer id){
-        return scheduleRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Cannot find schedule with id: " + id ));
+        return scheduleRepository.findById(id).orElseThrow(() -> new RuntimeException("Error: Cannot find schedule with id: " + id));
     }
 
     public Schedule update(Integer id, Schedule data){
         Optional<Schedule> findScheduleOptional = scheduleRepository.findById(id);
 
-        if(findScheduleOptional.isPresent()){
+        if (findScheduleOptional.isPresent()){
             Schedule findSchedule = findScheduleOptional.get();
             findSchedule.setSemester(data.getSemester());
             findSchedule.setClassName(data.getClassName());
@@ -53,16 +70,16 @@ public class ScheduleService {
         }
         switch (type) {
             case "INCREASE":
-                if (data.getCurrentStudent() >= 1) {
-                    data.setCurrentStudent(data.getCurrentStudent() - 1);
+                if (data.getCurrentStudent() < data.getMaxStudent()) {
+                    data.setCurrentStudent(data.getCurrentStudent() + 1);
                     scheduleRepository.save(data);
                     return true;
                 } else {
                     return false;
                 }
             case "DECREASE":
-                if (data.getCurrentStudent() < data.getMaxStudent()) {
-                    data.setCurrentStudent(data.getCurrentStudent() + 1);
+                if (data.getCurrentStudent() > 0) {
+                    data.setCurrentStudent(data.getCurrentStudent() - 1);
                     scheduleRepository.save(data);
                     return true;
                 } else {
