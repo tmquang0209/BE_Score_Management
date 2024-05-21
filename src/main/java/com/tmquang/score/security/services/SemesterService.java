@@ -5,6 +5,7 @@ import com.tmquang.score.repositories.SemesterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,12 @@ public class SemesterService {
 
     public List<Semester> getAll(){
         return semesterRepository.findAll();
+    }
+
+    public List<Semester> getSemestersByYear(Integer id){
+        List<Semester> semesterList = semesterRepository.findByYear(id);
+//        return semesterOptional.map(Collections::singletonList).orElse(Collections.emptyList());
+        return semesterList;
     }
 
     public Semester getById(Integer id){

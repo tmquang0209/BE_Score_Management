@@ -41,6 +41,17 @@ public class SemesterController {
         }
     }
 
+    @GetMapping("/year/{id}")
+    public ApiResponse<Semester> getSemestersByYear(@PathVariable Integer id){
+        try{
+            List<Semester> semesterList = semesterService.getSemestersByYear(id);
+
+            return new ApiResponse<>(true, semesterList, "Get semester list successful.");
+        }catch (Exception e){
+            return  new ApiResponse<>(false, null, e.getMessage());
+        }
+    }
+
     @GetMapping("/details/{id}")
     public ApiResponse<Semester> getById(@PathVariable Integer id){
         try{
