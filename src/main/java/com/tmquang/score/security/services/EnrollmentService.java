@@ -53,7 +53,13 @@ public class EnrollmentService {
         }
     }
 
-    public void delete(Integer id){
-        enrollmentRepository.deleteById(id);
+    public void delete(Integer id) {
+        if (enrollmentRepository.existsById(id)) {
+            enrollmentRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Enrollment not found with id: " + id);
+        }
     }
+
+
 }

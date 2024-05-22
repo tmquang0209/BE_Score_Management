@@ -29,11 +29,11 @@ public class EnrollmentController {
     public ApiResponse<Student> create(@RequestBody EnrollmentRequest enrollment) {
         try {
             System.out.println(enrollment.getScheduleId() + ", " + enrollment.getStudentId());
-            if(enrollment.getStudentId() == null){
+            if (enrollment.getStudentId() == null) {
                 throw new RuntimeException("Student code is required.");
             }
-
-            if(enrollment.getScheduleId() == null){
+            
+            if (enrollment.getScheduleId() == null) {
                 throw new RuntimeException("Schedule id is required.");
             }
 
@@ -92,13 +92,21 @@ public class EnrollmentController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ApiResponse<Enrollment> deleteById(@PathVariable Integer id) {
+    @DeleteMapping("/delete/{scheduleId}/{studentId}")
+    public ApiResponse<Enrollment> deleteById(@PathVariable Integer scheduleId, @PathVariable Integer studentId) {
         try {
-            enrollmentService.delete(id);
+            System.out.println("Schedule id: " + scheduleId);
+            System.out.println("Student id: " + studentId);
+
+            Enrollment findEnroll = enrollmentService.getByScheduleAndStudent(scheduleId, studentId);
+            if(findEnroll == null)
+                throw new Exception("Can not find enrollment");
+
+            enrollmentService.delete(findEnroll.getId());
             return new ApiResponse<>(true, null, "Enrollment deleted successfully.");
         } catch (Exception e) {
             return new ApiResponse<>(false, null, e.getMessage());
         }
     }
+
 }
