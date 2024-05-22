@@ -1,10 +1,9 @@
 package com.tmquang.score.models;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
-import jakarta.persistence.*;
 
 @Entity
 @Data
@@ -28,7 +27,7 @@ public class Score {
     @JoinColumn(name = "subject_id", referencedColumnName = "id")
     private Subject subject;
 
-    @Column(name = "midterm__score")
+    @Column(name = "midterm_score")
     private float midtermScore;
 
     @Column(name = "final_score")
@@ -44,6 +43,23 @@ public class Score {
         this.semester = semester;
         this.student = student;
         this.finalScore = finalScore;
+        this.midtermScore = midtermScore;
+        this.score = score;
+    }
+
+    public Score(Semester semester, Subject subject, Student student, float midtermScore, float finalScore) {
+        this.finalScore = finalScore;
+        this.semester = semester;
+        this.student = student;
+        this.subject = subject;
+        this.midtermScore = midtermScore;
+    }
+
+    public Score(Semester semester, Subject subject, Student student, float midtermScore, float finalScore, float score) {
+        this.finalScore = finalScore;
+        this.semester = semester;
+        this.student = student;
+        this.subject = subject;
         this.midtermScore = midtermScore;
         this.score = score;
     }
