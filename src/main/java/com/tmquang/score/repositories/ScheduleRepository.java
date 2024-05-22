@@ -17,4 +17,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
             "AND (:className IS NULL OR :className = '' OR s.className LIKE %:className%) " +
             "AND (:subjectId IS NULL OR s.subject.id = :subjectId)")
     List<Schedule> findBySemesterAndClassNameAndSubjectId(@Param("semesterId") Integer semesterId, @Param("className") String className, @Param("subjectId") Integer subjectId);
+
+    @Query("SELECT s FROM Schedule s WHERE s.semester.id = :semesterId " +
+            "AND (:subjectId IS NULL OR s.subject.id = :subjectId)" +
+            "AND (:teacherId IS NULL OR s.teacher.id = :teacherId)")
+    List<Schedule> findByTeacher(@Param("semesterId") Integer semesterId, @Param("subjectId") Integer subjectId, @Param("teacherId") Integer teacherId);
 }

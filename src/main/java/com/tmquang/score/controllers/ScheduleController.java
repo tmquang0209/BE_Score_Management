@@ -1,10 +1,16 @@
 package com.tmquang.score.controllers;
 
+import com.tmquang.score.models.Employee;
 import com.tmquang.score.models.Schedule;
+import com.tmquang.score.models.Teacher;
 import com.tmquang.score.payload.request.ScheduleRequest;
+import com.tmquang.score.repositories.EmployeeRepository;
+import com.tmquang.score.repositories.TeacherRepository;
+import com.tmquang.score.security.jwt.JwtUtils;
 import com.tmquang.score.security.services.ScheduleService;
 import com.tmquang.score.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +20,15 @@ import java.util.List;
 public class ScheduleController {
     @Autowired
     ScheduleService scheduleService;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
+
+    @Autowired
+    TeacherRepository teacherRepository;
+
+    @Autowired
+    JwtUtils jwtUtils;
 
     @PostMapping("/create")
     public ApiResponse<Schedule> create(@RequestBody Schedule schedule) {
@@ -48,6 +63,33 @@ public class ScheduleController {
             return new ApiResponse<>(true, scheduleList, "Get schedule list successful.");
         }catch (Exception e){
             return  new ApiResponse<>(false, null, e.getMessage());
+        }
+    }
+
+    @PostMapping("/getByTeacher")
+    public ApiResponse<Schedule> getByTeacher(@RequestHeader(value = "Authorization") String bearerToken, @RequestBody ScheduleRequest data){
+        try {
+            String accessToken = bearerToken.replace("Bearer ", "");
+            boolean isValidToken = jwtUtils.validateJwtToken(accessToken);
+            if (isValidToken) {
+                String username = jwtUtils.getUserNameFromJwtToken(accessToken);
+                Employee empDetails = employeeRepository.findByCode(username).orElse(null);
+                Teacher teacherDetails = teacherRepository.findByTeacherCode(username).orElse(null);
+
+                if (empDetails != null) {
+                    List<Schedule> scheduleList = scheduleService.getAll();
+
+                    return new ApiResponse<>(true, scheduleList, "Get schedule successful.");
+                } else if (teacherDetails != null) {
+                    List<Schedule> scheduleList = scheduleService.findByTeacher(data.getSemesterId(), data.getSubjectId(), teacherDetails.getId());
+                    return new ApiResponse<>(true, scheduleList, "Get schedule successful.");
+                } else {
+                    throw new UsernameNotFoundException("User not found with username: " + username);
+                }
+            }
+            return new ApiResponse<>(false, null, "Invalid token");
+        } catch (UsernameNotFoundException e) {
+            return new ApiResponse<>(false, null, e.getMessage());
         }
     }
 
