@@ -56,6 +56,16 @@ public class StudentController {
         }
     }
 
+    @GetMapping("/studentCode/{studentCode}")
+    public ApiResponse<Student> getByCode(@PathVariable String studentCode) {
+        try {
+            Student studentDetails = studentService.getByCode(studentCode);
+            return new ApiResponse<>(true, List.of(studentDetails), "Get student details successful.");
+        } catch (Exception e) {
+            return new ApiResponse<>(false, null, e.getMessage());
+        }
+    }
+
     @PutMapping("/update/{id}")
     public ApiResponse<Student> updateById(@PathVariable Integer id, @RequestBody Student student) {
         try {
