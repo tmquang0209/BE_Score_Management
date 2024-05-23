@@ -1,5 +1,6 @@
 package com.tmquang.score.controllers;
 
+import com.tmquang.score.dto.StudentScoreDTO;
 import com.tmquang.score.models.Score;
 import com.tmquang.score.models.Semester;
 import com.tmquang.score.models.Student;
@@ -76,6 +77,13 @@ public class ScoreController {
         }
     }
 
+    @GetMapping("/schedule/{id}")
+    public ApiResponse<StudentScoreDTO> getByScheduleId(@PathVariable Integer id) {
+        List<StudentScoreDTO> studentScoreDTOS = scoreService.getStudentScoresByScheduleId(id);
+
+        return new ApiResponse<>(true, studentScoreDTOS, "Get scores list successful");
+    }
+
     @GetMapping("/details/{id}")
     public ApiResponse<Score> getById(@PathVariable Integer id) {
         try {
@@ -86,11 +94,36 @@ public class ScoreController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    public ApiResponse<Score> updatebyId(@PathVariable Integer id, @RequestBody Score score) {
+    @GetMapping("/schedules/{scheduleId}/{studentId}")
+    public ApiResponse<StudentScoreDTO> getStudentScoresByStudentIdAndScheduleId(@PathVariable Integer studentId, @PathVariable Integer scheduleId) {
         try {
-            scoreService.update(id, score);
-            return new ApiResponse<>(true, null, "Score updated successfully.");
+            StudentScoreDTO studentScore = scoreService.getStudentScoresByStudentIdAndScheduleId(studentId, scheduleId);
+            if (studentScore == null) {
+                throw new RuntimeException("Can not find score");
+            }
+            return new ApiResponse<>(true, List.of(studentScore), "Get score successful,");
+        } catch (Exception e) {
+            return new ApiResponse<>(false, null, e.getMessage());
+        }
+    }
+
+    @PutMapping("/update/{scheduleId}")
+    public ApiResponse<Score> updateById(@PathVariable Integer scheduleId, @RequestBody ScoreRequest score) {
+        try {
+            System.out.println("Schedule id:" + scheduleId +
+                    "\t student code: " + score.getStudentCode() + "\t midterm: " + score.getMidtermTest() + "\t final: " + score.getFinalTest());
+            Student student = studentService.getByCode(score.getStudentCode());
+
+            StudentScoreDTO studentScoreDTO = scoreService.getStudentScoresByStudentIdAndScheduleId(student.getId(), scheduleId);
+            if(studentScoreDTO == null)
+                throw new RuntimeException("Can not find record");
+
+            int rowsAffected = scoreService.updateScoreByScheduleIdAndStudentCode(scheduleId, score.getStudentCode(), score.getMidtermTest(), score.getFinalTest());
+            if (rowsAffected > 0) {
+                return new ApiResponse<>(true, null, "Score updated successfully.");
+            } else {
+                return new ApiResponse<>(true, null, "Failed to update score.");
+            }
         } catch (Exception e) {
             return new ApiResponse<>(false, null, e.getMessage());
         }
