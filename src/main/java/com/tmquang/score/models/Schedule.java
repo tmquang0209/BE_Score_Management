@@ -61,5 +61,4 @@ public class Schedule {
         this.maxStudent = maxStudent;
         this.teacher = teacher;
     }
-
 }

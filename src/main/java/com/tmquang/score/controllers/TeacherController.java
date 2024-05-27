@@ -70,14 +70,4 @@ public class TeacherController {
             return new ApiResponse<>(false, null, e.getMessage());
         }
     }
-
-//    @DeleteMapping("/delete/{id}")
-//    public ApiResponse<Teacher> deleteById(@PathVariable Integer id) {
-//        try {
-//            teacherService.delete(id);
-//            return new ApiResponse<>(true, null, "Teacher deleted successfully.");
-//        } catch (Exception e) {
-//            return new ApiResponse<>(false, null, e.getMessage());
-//        }
-//    }
 }

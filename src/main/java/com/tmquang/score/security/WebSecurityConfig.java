@@ -22,10 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableMethodSecurity
-        (securedEnabled = true,
-                jsr250Enabled = true,
-                prePostEnabled = true) // by default
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true) // by default
 public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomUserDetailsService customUserDetailsService;
@@ -38,10 +35,11 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
         return new AuthTokenFilter();
     }
 
-//  @Override
-//  public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//    authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//  }
+    // @Override
+    // public void configure(AuthenticationManagerBuilder
+    // authenticationManagerBuilder) throws Exception {
+    // authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    // }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -53,11 +51,11 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
-//  @Bean
-//  @Override
-//  public AuthenticationManager authenticationManagerBean() throws Exception {
-//    return super.authenticationManagerBean();
-//  }
+    // @Bean
+    // @Override
+    // public AuthenticationManager authenticationManagerBean() throws Exception {
+    // return super.authenticationManagerBean();
+    // }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -69,40 +67,49 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//  @Override
-//  protected void configure(HttpSecurity http) throws Exception {
-//    http.cors().and().csrf().disable()
-//      .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-//      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//      .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-//      .antMatchers("/api/test/**").permitAll()
-//      .anyRequest().authenticated();
-//
-//    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-//  }
+    // @Override
+    // protected void configure(HttpSecurity http) throws Exception {
+    // http.cors().and().csrf().disable()
+    // .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+    // .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+    // .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+    // .antMatchers("/api/test/**").permitAll()
+    // .anyRequest().authenticated();
+    //
+    // http.addFilterBefore(authenticationJwtTokenFilter(),
+    // UsernamePasswordAuthenticationFilter.class);
+    // }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/user/signin").permitAll()
-                                .requestMatchers("/user/verifyToken").permitAll()
-                                .requestMatchers("/department/**").hasAuthority(String.valueOf(ERole.ADMIN))
-                                .requestMatchers("/year/create", "/year/update/**", "/year/delete/**").hasAuthority(String.valueOf(ERole.ADMIN))
-                                .requestMatchers("/year/**").permitAll()
-                                .requestMatchers("/semester/create", "/semester/update/**", "/semester/delete/**").hasAuthority(String.valueOf(ERole.ADMIN))
-                                .requestMatchers("/subject/**").hasAuthority(String.valueOf(ERole.ADMIN))
-                                .requestMatchers("/schedule/create", "/schedule/update/**", "/schedule/delete/**").hasAnyAuthority(String.valueOf(ERole.ADMIN), String.valueOf(ERole.TEACHER), String.valueOf(ERole.STAFF))
-//                                .requestMatchers("/enrollment/**").hasAnyAuthority(String.valueOf(ERole.ADMIN),String.valueOf(ERole.STAFF), String.valueOf(ERole.STUDENT))
-//                                .requestMatchers("/score/**", "/schedule/**").hasAnyAuthority(String.valueOf(ERole.ADMIN), String.valueOf(ERole.MANAGER), String.valueOf(ERole.STAFF), String.valueOf(ERole.TEACHER), String.valueOf(ERole.STUDENT))
-                                .requestMatchers("/major/create", "/major/update", "/major/delete").hasAuthority(String.valueOf(ERole.ADMIN))
-                                .requestMatchers("/student/create", "/student/update", "/student/delete").hasAuthority(String.valueOf(ERole.ADMIN))
-                                .requestMatchers("/major/all", "major/details/**").permitAll()
-                                .requestMatchers("/api/test/**").permitAll()
-                                .anyRequest().authenticated()
-                );
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/user/signin").permitAll()
+                        .requestMatchers("/user/verifyToken").permitAll()
+                        .requestMatchers("/department/**").hasAuthority(String.valueOf(ERole.ADMIN))
+                        .requestMatchers("/year/create", "/year/update/**", "/year/delete/**")
+                        .hasAuthority(String.valueOf(ERole.ADMIN))
+                        .requestMatchers("/year/**").permitAll()
+                        .requestMatchers("/semester/create", "/semester/update/**", "/semester/delete/**")
+                        .hasAuthority(String.valueOf(ERole.ADMIN))
+                        .requestMatchers("/subject/**").hasAuthority(String.valueOf(ERole.ADMIN))
+                        .requestMatchers("/schedule/create", "/schedule/update/**", "/schedule/delete/**")
+                        .hasAnyAuthority(String.valueOf(ERole.ADMIN), String.valueOf(ERole.TEACHER),
+                                String.valueOf(ERole.STAFF))
+                        // .requestMatchers("/enrollment/**").hasAnyAuthority(String.valueOf(ERole.ADMIN),String.valueOf(ERole.STAFF),
+                        // String.valueOf(ERole.STUDENT))
+                        // .requestMatchers("/score/**",
+                        // "/schedule/**").hasAnyAuthority(String.valueOf(ERole.ADMIN),
+                        // String.valueOf(ERole.MANAGER), String.valueOf(ERole.STAFF),
+                        // String.valueOf(ERole.TEACHER), String.valueOf(ERole.STUDENT))
+                        .requestMatchers("/major/create", "/major/update", "/major/delete")
+                        .hasAuthority(String.valueOf(ERole.ADMIN))
+                        .requestMatchers("/student/create", "/student/update", "/student/delete")
+                        .hasAuthority(String.valueOf(ERole.ADMIN))
+                        .requestMatchers("/major/all", "major/details/**").permitAll()
+                        .requestMatchers("/api/test/**").permitAll()
+                        .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
 

@@ -120,7 +120,9 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ApiResponse<?> updateInfo(@RequestHeader(value = "Authorization") String bearerToken, @PathVariable Integer id, @RequestBody UserRequest data){
+    public ApiResponse<?> updateInfo(@RequestHeader(value = "Authorization") String bearerToken,
+                                    @PathVariable Integer id,
+                                    @RequestBody UserRequest data){
         String accessToken = bearerToken.replace("Bearer ", "");
         boolean isValidToken = jwtUtils.validateJwtToken(accessToken);
 
@@ -143,7 +145,9 @@ public class UserController {
     }
 
     @PutMapping("/changePassword/{id}")
-    public ApiResponse<?> changePassword(@RequestHeader(value = "Authorization") String bearerToken, @PathVariable Integer id, @RequestBody ChangePasswordRequest data){
+    public ApiResponse<?> changePassword(@RequestHeader(value = "Authorization") String bearerToken,
+                                        @PathVariable Integer id,
+                                        @RequestBody ChangePasswordRequest data){
         try {
             String accessToken = bearerToken.replace("Bearer ", "");
             boolean isValidToken = jwtUtils.validateJwtToken(accessToken);
