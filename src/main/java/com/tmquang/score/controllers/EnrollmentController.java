@@ -32,17 +32,14 @@ public class EnrollmentController {
             if (enrollment.getStudentId() == null) {
                 throw new RuntimeException("Student code is required.");
             }
-            
+
             if (enrollment.getScheduleId() == null) {
                 throw new RuntimeException("Schedule id is required.");
             }
 
             Schedule schedule = scheduleService.getById(enrollment.getScheduleId());
             Student student = studentService.getByCode(enrollment.getStudentId());
-
-            // check exists
-//            enrollmentService.
-
+            
             Enrollment newEnrollment = new Enrollment(student, schedule);
 
             Enrollment saveEnrollment = enrollmentService.saveEnrollment(newEnrollment);
