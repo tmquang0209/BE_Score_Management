@@ -42,6 +42,11 @@ public class SubjectService {
         }
     }
 
+    public List<Subject> searchKeyword(String keyword){
+        System.out.println(keyword);
+        return subjectRepository.findByKeyword(keyword);
+    }
+
     public void delete(Integer id){
         subjectRepository.deleteById(id);
     }
