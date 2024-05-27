@@ -34,6 +34,17 @@ public class SubjectController {
         }
     }
 
+    @GetMapping("/search/{keyword}")
+    public ApiResponse<Subject> search(@PathVariable String keyword){
+        try{
+            List<Subject> searchData = subjectService.searchKeyword(keyword);
+            return new ApiResponse<>(true, searchData, "Search success");
+        }
+        catch (Exception e){
+            return new ApiResponse<>(false, null, e.getMessage());
+        }
+    }
+
     @GetMapping("/details/{id}")
     public ApiResponse<Subject> getById(@PathVariable Integer id){
         try{

@@ -33,5 +33,4 @@ public class Subject {
         this.subjectName = subjectName;
         this.credit = credit;
     }
-
 }
