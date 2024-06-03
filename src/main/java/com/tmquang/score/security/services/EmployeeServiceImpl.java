@@ -44,6 +44,7 @@ public class EmployeeServiceImpl implements UserDetailsService {
 
     if(findEmployeeOptional.isPresent()){
       Employee findEmployee = findEmployeeOptional.get();
+      findEmployee.setName(data.getName());
       findEmployee.setEmail(data.getEmail());
       findEmployee.setPhone(data.getPhone());
       findEmployee.setAddress(data.getAddress());
