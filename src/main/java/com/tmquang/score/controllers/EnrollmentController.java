@@ -29,24 +29,30 @@ public class EnrollmentController {
     public ApiResponse<Student> create(@RequestBody EnrollmentRequest enrollment) {
         try {
             System.out.println(enrollment.getScheduleId() + ", " + enrollment.getStudentId());
-            if (enrollment.getStudentId() == null) {
+            if (enrollment.getStudentId().describeConstable().isEmpty()) {
                 throw new RuntimeException("Student code is required.");
             }
 
-            if (enrollment.getScheduleId() == null) {
+            if (enrollment.getScheduleId().describeConstable().isEmpty()) {
                 throw new RuntimeException("Schedule id is required.");
             }
 
             Schedule schedule = scheduleService.getById(enrollment.getScheduleId());
-            Student student = studentService.getByCode(enrollment.getStudentId());
-            
+            Student student = studentService.getById(enrollment.getStudentId());
+
+            if (student == null) {
+                throw new RuntimeException("Student not found for the provided code: " + enrollment.getStudentId());
+            }
+
             Enrollment newEnrollment = new Enrollment(student, schedule);
 
             Enrollment saveEnrollment = enrollmentService.saveEnrollment(newEnrollment);
             return new ApiResponse<>(true, List.of(student), "Enrollment created successfully.");
         } catch (RuntimeException ex) {
+            System.out.println(ex.getMessage() + ", " + ex.getCause());
             return new ApiResponse<>(false, null, ex.getMessage());
         }
+
     }
 
     @GetMapping("/all")

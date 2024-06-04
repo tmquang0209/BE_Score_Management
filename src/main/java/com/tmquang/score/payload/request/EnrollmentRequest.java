@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class EnrollmentRequest {
     Integer scheduleId;
-    String studentId;
+    Integer studentId;
 }
